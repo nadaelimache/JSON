@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrazione e Contatore</title>
+</head>
+<body>
+    <h1>Registrazione</h1>
+    
+    <p>Nome Salvato: <span id="savedName"></span></p>
+
+    <form id="registrationForm">
+        <label for="nameInput">Nome:</label>
+        <input type="text" id="nameInput" placeholder="Inserisci il tuo nome">
+        <button type="button" id="saveButton">Salva</button>
+        <button type="button" id="removeButton">Rimuovi</button>
+    </form>
+
+    <h2>Contatore di Tempo</h2>
+    <p>Tempo trascorso (secondi): <span id="timeCounter">0</span></p>
+
+    <script>
+        // Recupera il nome precedentemente salvato da localStorage
+        const savedName = localStorage.getItem('userName');
+        if (savedName) {
+            document.getElementById('savedName').textContent = savedName;
+        }
+
+        // Aggiungi un gestore di eventi al pulsante "Salva"
+        document.getElementById('saveButton').addEventListener('click', function() {
+            const name = document.getElementById('nameInput').value;
+            if (name) {
+                localStorage.setItem('userName', name);
+                document.getElementById('savedName').textContent = name;
+            }
+        });
+
+        // Aggiungi un gestore di eventi al pulsante "Rimuovi"
+        document.getElementById('removeButton').addEventListener('click', function() {
+            localStorage.removeItem('userName');
+            document.getElementById('savedName').textContent = '';
+        });
+
+        // Contatore di tempo utilizzando sessionStorage
+        let seconds = 0;
+        const timeCounter = document.getElementById('timeCounter');
+
+        function updateCounter() {
+            seconds++;
+            timeCounter.textContent = seconds;
+            sessionStorage.setItem('sessionTime', seconds);
+        }
+
+        const sessionTime = sessionStorage.getItem('sessionTime');
+        if (sessionTime) {
+            seconds = parseInt(sessionTime);
+        }
+
+        // Aggiorna il contatore ogni secondo
+        setInterval(updateCounter, 1000);
+    </script>
+</body>
+</html>
